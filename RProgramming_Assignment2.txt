@@ -1,0 +1,55 @@
+
+R version 3.3.0 (2016-05-03) -- "Supposedly Educational"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.68 (7202) x86_64-apple-darwin13.4.0]
+
+> ## Put comments here that give an overall description of what your
+## functions do
+
+## This function creates a special "matrix" object that can cache its inverse.
+
+makeCacheMatrix <- function(x = matrix()) {
+      inverse <- NULL
+      set <- function(y) {
+              x <<- y
+              inverse <<- NULL
+      }
+      get <- function() x
+      setInverse <- function(inv) inverse <<- inv
+      getInverse <- function() inverse
+      list(set = set, get = get,
+           setInverse = setInverse,
+           getInverse = getInverse)
+}
+
+
+## This function computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
+
+cacheSolve <- function(x, ...) {
+  ## Return a matrix that is the inverse of 'x'
+    inverse <- x$getInverse()
+     if(!is.null(inverse)) {
+         message("getting cached data")
+          return(inverse)
+     }
+     matrix_assignment <- x$get()
+     inverse <- solve(matrix_assignment, ...)
+     x$setInverse(inverse)
+     inverse
+}
